@@ -33,6 +33,7 @@ public class Converter {
 
         //4
 
+        int num=1;
         while (automat.getNewNode()!=null){
             //4.1
             System.out.println("qmsdlkfjqsfmqlsdkj");
@@ -44,7 +45,8 @@ public class Converter {
 
                 MCGGeneration.Node newNode=net.executeEvent(e,node);
 
-                Node waNewNode=newNode.convertToWANode(unboundedPlace);//todo im not sure if the unbouded place marking should be 0 or the energy
+
+                Node waNewNode=newNode.convertToWANode(unboundedPlace);//todo im not sure if the unbouded place marking should be 0 or the energy or the result of execution
 
                 System.out.println("node ="+node.print());
                 System.out.println(waNewNode.print());
@@ -65,14 +67,16 @@ public class Converter {
                     Link link=new Link(deltaM,e,node,waNewNode);
                     automat.addLink(link);
                     //4.2.3.3
-                    if(automat.exists(waNewNode)){
-                        System.out.println(automat.exists(waNewNode));
+                    if(automat.exists(waNewNode,unboundedPlace)){
+                        System.out.println(automat.exists(waNewNode,unboundedPlace));
                         waNewNode.setNewTag(false);
 
 
                     }else{
                         waNewNode.setNewTag(true);
                         waNewNode.setSafe(automat.getInterval(y));
+                        waNewNode.setName("l"+num);
+                        num++;
                         automat.addNode(waNewNode);
 
                     }

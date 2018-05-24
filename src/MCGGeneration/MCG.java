@@ -73,4 +73,17 @@ public class MCG {
         }
         return null;
     }
+
+    public Place getUnboundedPlaces(){
+        for (Node n:nodes) {
+            if(n.containsWMarking()){
+                for (Place p:n.getPlaces()) {
+                    if(p.isWmarking()){
+                     return p;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -87,5 +87,14 @@ public class Node {
             return null;
     }
 
+    public WAConvertion.Node convertToWANode(Place unboundedPlace){
+        for (Place p:places) {
+//            if(p.getName().equals(unboundedPlace.getName())){
+//                p.setM(new IntMarking(0));
+//            }
+        }
+        return new WAConvertion.Node(this.getName(),this.places,unboundedPlace,null,true);
+    }
+
 
 }

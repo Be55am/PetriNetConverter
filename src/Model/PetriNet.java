@@ -1,8 +1,12 @@
 package Model;
 
 import MCGGeneration.*;
+import WAConvertion.WeightedAutomata;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class PetriNet {
 
@@ -29,8 +33,6 @@ public class PetriNet {
     public void setName(String name) {
         this.name = name;
     }
-
-
 
     public void calculateC(){
 
@@ -85,6 +87,7 @@ public class PetriNet {
                   WMarking marking=(WMarking)n.getPlaces()[j].getMarking();
                   // todo im not sure about this but looks right you should check it later
                   int v=marking.getK()+marking.getR()+marking.getN();
+                  //todo i think this one should be pre and not c
                   sum=c.getValues()[j][i]+v;
                   if(sum<0){
                       b=false;
@@ -191,6 +194,75 @@ public class PetriNet {
         }
         return new Node(null,result);
 
+    }
+
+    public ArrayList<Event> getEvents(){
+        ArrayList<Event> result=new ArrayList<>();
+        for (Transition t:pre.getTransitions()) {
+            if(!result.contains(t.getEvent())){
+                result.add(t.getEvent());
+            }
+
+        }
+        return result;
+    }
+
+    public Matrix getPre() {
+        return pre;
+    }
+
+    public void setPre(Matrix pre) {
+        this.pre = pre;
+    }
+    /**
+     * this methode return a list of the transitions markings from the pre matrix of the unbounded place
+     * @param place
+     * @return
+     */
+    public ArrayList<Integer> getPre(String place){
+        ArrayList<Integer> res=new ArrayList();
+        for(int i=0;i<pre.getPlaces().length;i++){
+            if(pre.getPlaces()[i].equals(place)){
+                for(int j=0;j<pre.getTransitions().length;j++){
+                    if(pre.getValues()[j][i]!=0){
+                        res.add(pre.getValues()[j][i]);
+                    }
+                }
+            }
+        }
+        Collections.sort(res);
+        return res;
+    }
+    /**
+     * delta is the sum of the enabled transitions x unbounded place in the c matrix
+     * @param unboundedPlace
+     * @param node
+     * @param event
+     * @return
+     */
+    public int getDelta(Place unboundedPlace,Node node,Event event){
+        ArrayList<Transition>enabledTransitions=this.getEnabledTransitions(event,node);
+        int delta=0;
+        for (int i=0;i<c.getPlaces().length;i++){
+            if(c.getPlaces()[i].equals(unboundedPlace.getName())) {
+                for (int j = 0; j < c.getTransitions().length; j++) {
+                    if(enabledTransitions.contains(c.getTransitions()[j])){
+                        delta+=c.getValues()[i][j];
+                    }
+                }
+            }
+        }
+        return delta;
+    }
+    public Marking getInitialMarking(Place p){
+        Node n=this.getInitialMarking();
+        for (Place place:n.getPlaces()) {
+            if(place.getName().equals(p.getName())){
+                return place.getMarking();
+            }
+        }
+        System.out.println("place not found in get initial marking methode");
+        return null;
     }
 
 }
