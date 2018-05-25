@@ -12,12 +12,13 @@ public class Node extends MCGGeneration.Node {
     private Interval safe;
     private int energy;
 
-    public Node(String name,Place[] places,Place unboundedPlace,Interval safe,boolean newTag){
+    public Node(String name,Place[] places,Place unboundedPlace,Interval safe,int energy,boolean newTag){
         super(name,places);
         this.unboundedPlace=unboundedPlace;
         this.safe=safe;
         this.setNewTag(newTag);
-        this.energy=((IntMarking)unboundedPlace.getMarking()).getValue();
+        this.setEnergy(energy);
+
 
 
     }

@@ -27,7 +27,8 @@ public class Converter {
         }
 
         //3
-        Node n0=new Node("l0",getM0(net,unboundedPlace),unboundedPlace,automat.getInterval(automat.getIntervalPos(((IntMarking)unboundedPlace.getMarking()).getValue())),true);
+        int energy=automat.getIntervalPos(((IntMarking)unboundedPlace.getMarking()).getValue());
+        Node n0=new Node("l0",getM0(net,unboundedPlace),unboundedPlace,automat.getInterval(energy),energy,true);
         System.out.println("interval : min ="+n0.getSafe().getMin()+"   max ="+n0.getSafe().getMax()+"\n");
         automat.addNode(n0);
 
@@ -41,12 +42,12 @@ public class Converter {
             //4.2
             for (Event e:automat.getAlphabet()) {
                 //4.2.1
-                System.out.println(e.getName());
+                String d=e.getName();
 
                 MCGGeneration.Node newNode=net.executeEvent(e,node);
 
 
-                Node waNewNode=newNode.convertToWANode(unboundedPlace);//todo im not sure if the unbouded place marking should be 0 or the energy or the result of execution
+                Node waNewNode=newNode.convertToWANode(unboundedPlace);
 
                 System.out.println("node ="+node.print());
                 System.out.println(waNewNode.print());
@@ -55,29 +56,30 @@ public class Converter {
                 //4.2.2
                 //todo
                 //System.out.println("bla bal bal"+node.getEnergy());
-                int i=automat.getIntervalPos(((automat.getInterval( node.getEnergy())).getMin())+deltaM);
-                int j=automat.getIntervalPos(automat.getInterval( node.getEnergy()).getMax()+deltaM);
+                int i=automat.getIntervalPos(((automat.getIntervalsList().get(node.getEnergy())).getMin())+deltaM);
+                int j=automat.getIntervalPos(((automat.getIntervalsList().get(node.getEnergy())).getMax())+deltaM);
                 System.out.println("delta = "+deltaM+" i= "+i+" j="+j);
                 //4.2.3
                 for(int y=i;y<=j;y++){
                     //4.2.3.1
-                    waNewNode.setEnergy(y);
+                    Node newN=new Node(null,waNewNode.getPlaces(),unboundedPlace,null,y,true);
+                    //waNewNode.setEnergy(y);
                   //  automat.addNode(waNewNode);
                     //4.2.3.2
-                    Link link=new Link(deltaM,e,node,waNewNode);
+                    Link link=new Link(deltaM,e,node,newN);
                     automat.addLink(link);
                     //4.2.3.3
-                    if(automat.exists(waNewNode,unboundedPlace)){
-                        System.out.println(automat.exists(waNewNode,unboundedPlace));
-                        waNewNode.setNewTag(false);
+                    if(automat.exists(newN,unboundedPlace)){
+                        System.out.println(automat.exists(newN,unboundedPlace));
+                        newN.setNewTag(false);
 
 
                     }else{
-                        waNewNode.setNewTag(true);
-                        waNewNode.setSafe(automat.getInterval(y));
-                        waNewNode.setName("l"+num);
+                        newN.setNewTag(true);
+                        newN.setSafe(automat.getIntervalsList().get(y));/////////
+                        newN.setName("l"+num);
                         num++;
-                        automat.addNode(waNewNode);
+                        automat.addNode(newN);
 
                     }
 

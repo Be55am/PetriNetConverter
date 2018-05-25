@@ -3,6 +3,7 @@ package Model;
 import MCGGeneration.*;
 import WAConvertion.WeightedAutomata;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,6 +24,10 @@ public class PetriNet {
         calculateC();
         this.initialMarking=initialMarking;
 
+
+    }
+
+    public PetriNet(File file){
 
     }
 

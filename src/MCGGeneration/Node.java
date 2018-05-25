@@ -93,7 +93,7 @@ public class Node {
 //                p.setM(new IntMarking(0));
 //            }
         }
-        return new WAConvertion.Node(this.getName(),this.places,unboundedPlace,null,true);
+        return new WAConvertion.Node(this.getName(),this.places,unboundedPlace,null,-9999,true);
     }
 
 

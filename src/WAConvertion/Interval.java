@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Interval {
     private int min;
     private int Max;
-    public static final int INFINITY=-1;
+
 
     public Interval(int min,int max){
         this.setMin(min);
@@ -17,18 +17,19 @@ public class Interval {
     }
 
     public void setMin(int min) {
-        if(min<-1)
+        if(min<0)
             System.out.println("intervals should have positive values !");
         else
             this.min = min;
     }
 
     public int getMax() {
-        return Max;
+
+            return Max;
     }
 
     public void setMax(int max) {
-        if(min<-1)
+        if(max<0)
             System.out.println("intervals should have positive values !");
         else
             Max = max;

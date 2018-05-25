@@ -13,7 +13,6 @@ public class WeightedAutomata {
     private ArrayList<Link> linkList;
     private ArrayList<Event> alphabet;
     private ArrayList<Integer> delta;
-
     private ArrayList<Interval> intervalsList;
 
     public WeightedAutomata(String name) {
@@ -83,7 +82,7 @@ public class WeightedAutomata {
             res.add(interval);
 
         }
-        Interval last=new Interval(val.get(val.size()-1),Interval.INFINITY);
+        Interval last=new Interval(val.get(val.size()-1),999999999);
         res.add(last);
 
         return res;
@@ -104,7 +103,7 @@ public class WeightedAutomata {
                 if(p<=i.getMax()){
                     return i;
                 }
-                else if(i.getMax()==-1){
+                else if(i.getMax()==999999999){
                     return i;
                 }
             }
@@ -120,7 +119,7 @@ public class WeightedAutomata {
                 if(num<=interval.getMax()){
                     return i;
                 }
-                else if(interval.getMax()==-1){
+                else if(interval.getMax()==999999999){
                     return i;
                 }
             }
